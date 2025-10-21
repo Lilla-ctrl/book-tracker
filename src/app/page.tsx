@@ -1,15 +1,15 @@
 import BookCard from "../../components/BookCard";
-
-
+import { fetchBooks } from "./lib/fetchBooks";
 
 export default async function Home() {
+  const fantasyBooks = await fetchBooks("fantasy");
 
   return (
     <div>
       <main className="p-8">
         <h1 className="text-3xl mb-6 text-center">Book Tracker</h1>
         <div className="flex flex-wrap justify-center gap-4">
-          {cleanedBooks.map((book, index) => (
+          {fantasyBooks.map((book, index) => (
             <BookCard
               key={index}
               title={book.title}

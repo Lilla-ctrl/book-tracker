@@ -1,4 +1,5 @@
-import type { BookCardProps } from "@/components/BookCard";
+
+import type { BookCardProps } from "../types/book";
 
 type GoogleBookItem = {
   id: string;
