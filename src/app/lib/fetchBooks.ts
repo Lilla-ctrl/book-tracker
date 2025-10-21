@@ -1,4 +1,3 @@
-
 import type { BookCardProps } from "../types/book";
 
 type GoogleBookItem = {
@@ -17,13 +16,11 @@ type GoogleBooksResponse = {
 };
 
 export async function fetchBooks(category: string): Promise<BookCardProps[]> {
+  const url = `https://www.googleapis.com/books/v1/volumes?q=subject:${encodeURIComponent(
+    category
+  )}&orderBy=newest&printType=books`;
   try {
-    const res = await fetch(
-      `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(
-        category
-      )}`,
-      { cache: "no-store" }
-    );
+    const res = await fetch(url, { cache: "no-store" });
 
     if (!res.ok) {
       throw new Error(`Failed to fetch books for "${category}"`);
