@@ -5,6 +5,7 @@ type GoogleBookItem = {
   volumeInfo: {
     title?: string;
     authors?: string[];
+    publishedDate?: string;
     imageLinks?: {
       thumbnail?: string;
     };
@@ -29,13 +30,26 @@ export async function fetchBooks(category: string): Promise<BookCardProps[]> {
     const data = (await res.json()) as GoogleBooksResponse;
 
     const books: GoogleBookItem[] = data.items ?? [];
+    console.log("Dates:", books.map(b => b.volumeInfo.publishedDate).filter(Boolean));
 
-    return books.map((item) => {
+
+    const currentYear = new Date().getFullYear();
+
+    const recentBooks = books.filter((item) => {
+      const year = item.volumeInfo.publishedDate?.slice(0, 4);
+      return (
+        (year && year === String(currentYear)) ||
+        year === String(currentYear - 5)
+      );
+    });
+
+    return recentBooks.map((item) => {
       const v = item.volumeInfo;
       return {
         title: v.title ?? "No title",
         author: v.authors?.[0] ?? "Unknown author",
         coverUrl: v.imageLinks?.thumbnail,
+        publishedDate: v.publishedDate,
       };
     });
   } catch (err) {
